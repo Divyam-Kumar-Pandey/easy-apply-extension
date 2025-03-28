@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Wellfound AI Easy apply",
+    "version": "2.0",
+    "description": "Wellfound AI Easy apply is a browser extension that automates job applications by leveraging AI to generate personalized responses. It reads job descriptions, integrates with your resume, and fills out application forms seamlessly, saving time and effort.",
+    "icons": {
+      "16" : "./icons/write-16x16.png",
+      "48" : "./icons/write-48x48.png",
+      "128" : "./icons/write-128x128.png"
+    },
+    "permissions": ["scripting", "storage"],
+    "host_permissions": ["<all_urls>"],
+    "content_scripts": [
+      {
+        "matches": ["https://wellfound.com/jobs*"], 
+        "js": ["content-script.js"]
+      }
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "externally_connectable": {
+      "matches": ["https://wellfound.com/*"]
+    },
+    "action": {
+      "default_popup": "index.html"
+    }
+  }
+  
+
+  
