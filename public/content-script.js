@@ -181,67 +181,160 @@ function generateRefineContentButton(applyButton, index) {
   button.textContent = "Revise Content";
   button.type = "button";
   button.className = applyButton.className;
-  button.style.padding = "1px 16px";
 
   button.addEventListener("click", () => {
     // Open a dialog box with all the refine options
     const dialog = document.createElement("dialog");
     dialog.id = "refineOptionsForm" + index;
     dialog.style.border = "none";
-    dialog.style.borderRadius = "8px";
-    dialog.style.padding = "20px";
-    dialog.style.backgroundColor = "#f9f9f9";
-    dialog.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+    dialog.style.borderRadius = "12px";
+    dialog.style.padding = "24px";
+    dialog.style.backgroundColor = "#ffffff";
+    dialog.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.15)";
+    dialog.style.maxWidth = "400px";
+    dialog.style.width = "90%";
+    dialog.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    
     const form = document.createElement("form");
     form.method = "dialog";
     form.id = "refineOptionsForm" + index;
     form.onsubmit = () => refineContent(index);
+    form.style.display = "flex";
+    form.style.flexDirection = "column";
+    form.style.gap = "16px";
+    
     const h2 = document.createElement("h2");
-    h2.textContent = "Refine Options";
-    h2.style.marginBottom = "15px";
-    h2.style.fontSize = "1.5em";
-    h2.style.color = "#333";
+    h2.textContent = "Refine Your Answer";
+    h2.style.margin = "0 0 8px 0";
+    h2.style.fontSize = "1.5rem";
+    h2.style.fontWeight = "600";
+    h2.style.color = "#333333";
+    h2.style.textAlign = "center";
     form.appendChild(h2);
+    
+    const subtitle = document.createElement("p");
+    subtitle.textContent = "Choose how you want to improve your answer:";
+    subtitle.style.margin = "0 0 8px 0";
+    subtitle.style.fontSize = "0.9rem";
+    subtitle.style.color = "#666666";
+    subtitle.style.textAlign = "center";
+    form.appendChild(subtitle);
+    
+    const optionsContainer = document.createElement("div");
+    optionsContainer.style.display = "flex";
+    optionsContainer.style.flexDirection = "column";
+    optionsContainer.style.gap = "10px";
+    optionsContainer.style.marginTop = "8px";
+    optionsContainer.style.marginBottom = "16px";
 
     REFINE_TYPES.forEach((type) => {
       const label = document.createElement("label");
       label.style.display = "flex";
       label.style.alignItems = "center";
-      label.style.gap = "10px";
-      label.style.fontSize = "1em";
-      label.style.color = "#555";
-      label.textContent = REFINE_TYPE_TO_LABEL[type];
+      label.style.padding = "10px 12px";
+      label.style.borderRadius = "8px";
+      label.style.cursor = "pointer";
+      label.style.transition = "background-color 0.2s";
+      label.style.backgroundColor = "#f5f5f5";
+      label.style.border = "1px solid #e0e0e0";
+      
+      label.addEventListener("mouseover", () => {
+        label.style.backgroundColor = "#edf5ff";
+      });
+      
+      label.addEventListener("mouseout", () => {
+        label.style.backgroundColor = "#f5f5f5";
+      });
+      
       const input = document.createElement("input");
-      input.style.marginRight = "5px";
       input.type = "radio";
       input.name = "refineType";
       input.value = type;
+      input.style.marginRight = "12px";
+      input.style.cursor = "pointer";
+      input.style.accentColor = "#0073ea";
+      
+      const labelText = document.createElement("span");
+      labelText.textContent = REFINE_TYPE_TO_LABEL[type];
+      labelText.style.fontSize = "0.95rem";
+      labelText.style.fontWeight = "500";
+      labelText.style.color = "#444444";
+      
       label.appendChild(input);
-      form.appendChild(label);
+      label.appendChild(labelText);
+      optionsContainer.appendChild(label);
     });
+    
+    form.appendChild(optionsContainer);
+    
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.display = "flex";
+    buttonContainer.style.justifyContent = "flex-end";
+    buttonContainer.style.gap = "12px";
+    buttonContainer.style.marginTop = "8px";
+    
     const cancelButton = document.createElement("button");
-    cancelButton.style.marginRight = "10px";
-    cancelButton.style.backgroundColor = "#0056b3";
-    cancelButton.style.color = "white";
-    cancelButton.style.border = "none";
-    cancelButton.style.borderRadius = "5px";
-    cancelButton.style.cursor = "pointer";
     cancelButton.textContent = "Cancel";
     cancelButton.type = "button";
+    cancelButton.style.padding = "10px 16px";
+    cancelButton.style.backgroundColor = "#ffffff";
+    cancelButton.style.color = "#0073ea";
+    cancelButton.style.border = "1px solid #0073ea";
+    cancelButton.style.borderRadius = "6px";
+    cancelButton.style.cursor = "pointer";
+    cancelButton.style.fontWeight = "500";
+    cancelButton.style.fontSize = "0.9rem";
+    cancelButton.style.transition = "background-color 0.2s";
+    
+    cancelButton.addEventListener("mouseover", () => {
+      cancelButton.style.backgroundColor = "#f0f7ff";
+    });
+    
+    cancelButton.addEventListener("mouseout", () => {
+      cancelButton.style.backgroundColor = "#ffffff";
+    });
+    
     cancelButton.onclick = () => dialog.close();
-    form.appendChild(cancelButton);
+    
     const refineButton = document.createElement("button");
-    refineButton.textContent = "Refine it!";
+    refineButton.textContent = "Refine Answer";
     refineButton.type = "submit";
-    refineButton.style.backgroundColor = "#007bff";
+    refineButton.style.padding = "10px 16px";
+    refineButton.style.backgroundColor = "#0073ea";
     refineButton.style.color = "white";
     refineButton.style.border = "none";
-    refineButton.style.borderRadius = "5px";
+    refineButton.style.borderRadius = "6px";
     refineButton.style.cursor = "pointer";
-    form.appendChild(refineButton);
+    refineButton.style.fontWeight = "500";
+    refineButton.style.fontSize = "0.9rem";
+    refineButton.style.transition = "background-color 0.2s";
+    
+    refineButton.addEventListener("mouseover", () => {
+      refineButton.style.backgroundColor = "#005bb7";
+    });
+    
+    refineButton.addEventListener("mouseout", () => {
+      refineButton.style.backgroundColor = "#0073ea";
+    });
+    
+    buttonContainer.appendChild(cancelButton);
+    buttonContainer.appendChild(refineButton);
+    form.appendChild(buttonContainer);
+    
     dialog.appendChild(form);
     document.body.insertAdjacentElement("afterend", dialog);
+    
+    // Add backdrop styling
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    
     dialog.showModal();
+    
+    // Set first option as default selected
+    if (optionsContainer.querySelector('input[type="radio"]')) {
+      optionsContainer.querySelector('input[type="radio"]').checked = true;
+    }
   });
 
   return button;
