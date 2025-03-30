@@ -9,6 +9,7 @@ const REFINE_TYPES = [
   "clarity",
   "completeness",
   "formality",
+  "custom",
 ];
 
 const REFINE_TYPE_TO_LABEL = {
@@ -18,6 +19,7 @@ const REFINE_TYPE_TO_LABEL = {
   clarity: "Improve Clarity",
   completeness: "Improve Completeness",
   formality: "Improve Formality",
+  custom: "Custom Prompt",
 };
 
 let inputFields = [];
@@ -186,7 +188,7 @@ function generateRefineContentButton(applyButton, index) {
     // Open a dialog box with all the refine options
     const dialog = document.createElement("dialog");
     dialog.id = "refineOptionsForm" + index;
-    dialog.style.border = "none";
+    dialog.style.border = "1px solid #e0e0e0";
     dialog.style.borderRadius = "12px";
     dialog.style.padding = "24px";
     dialog.style.backgroundColor = "#ffffff";
@@ -262,9 +264,31 @@ function generateRefineContentButton(applyButton, index) {
       
       label.appendChild(input);
       label.appendChild(labelText);
+      
+      // Add PRO tag for custom prompt option
+      if (type === "custom") {
+        const proTag = document.createElement("span");
+        proTag.textContent = "PRO";
+        proTag.style.marginLeft = "auto";
+        proTag.style.backgroundColor = "#FFD700";
+        proTag.style.color = "#000";
+        proTag.style.padding = "2px 6px";
+        proTag.style.borderRadius = "4px";
+        proTag.style.fontSize = "0.7rem";
+        proTag.style.fontWeight = "bold";
+        proTag.style.letterSpacing = "0.5px";
+        label.appendChild(proTag);
+        
+        // Disable this option if not a pro user
+        // You can implement a check for pro users here
+        input.disabled = true;
+        label.style.opacity = "0.7";
+        label.title = "Upgrade to Pro to use custom prompts";
+      }
+      
       optionsContainer.appendChild(label);
     });
-    
+     
     form.appendChild(optionsContainer);
     
     const buttonContainer = document.createElement("div");
