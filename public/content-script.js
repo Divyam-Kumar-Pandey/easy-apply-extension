@@ -95,13 +95,16 @@ function waitForApplyButton() {
               aboutTheJob: aboutTheJob + "\n Here is my resume: " + resume,
               question: questions,
             });
-
-            try {
-              const response = await fetch(`${BASE_URL}/api/write`, {
+            
+            chrome.storage.local.get(["accessToken"], async (result) => {
+              
+              const token = result.accessToken.accessToken
+              try {
+                const response = await fetch(`${BASE_URL}/api/write`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: "Bearer 159",
+                  Authorization: "Bearer " + token,  
                 },
                 body: bodyForApi,
               });
@@ -145,14 +148,15 @@ function waitForApplyButton() {
                 }
               });
 
-              await sleep(1000);
+              // await sleep(1000);
             } catch (error) {
               console.error("Error during API call:", error);
               alert("Failed to fetch data.");
             } finally {
               writeWithAIButton.disabled = false;
               writeWithAIButton.textContent = "Write with AI";
-            }
+              }
+            });
           });
         } catch (error) {
           console.error("Error:", error);
@@ -378,10 +382,16 @@ async function refineContent(index) {
     refineType: refineType,
   });
 
-  const response = await fetch(`${BASE_URL}/api/refine`, {
-    method: "POST",
-    body: bodyForApi,
-  });
+  chrome.storage.local.get(["accessToken"], async (result) => {
+    const token = result.accessToken.accessToken;
+    const response = await fetch(`${BASE_URL}/api/refine`, {
+      method: "POST",
+      body: bodyForApi,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
   const responseData = await response.json();
   console.log(responseData);
@@ -389,6 +399,7 @@ async function refineContent(index) {
   inputFields[index].value = responseData.refinedText;
   inputFields[index]._valueTracker?.setValue("");
   inputFields[index].dispatchEvent(new Event("input", { bubbles: true }));
+  });
 }
 
 function sanitisePage() {

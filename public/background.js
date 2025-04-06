@@ -9,12 +9,12 @@ chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => 
         console.log("User data received:", message);
 
         // Save the data to storage
-        chrome.storage.local.set({ userData: message }, () => {
+        chrome.storage.local.set({ accessToken: message }, () => {
             console.log("User data saved in extension storage.");
         });
 
         // Respond back
-        sendResponse({ status: "success", message: "User data received by the extension" });
+        sendResponse({ status: "success", message: "Access token received by the extension" });
         return true;
     }
 
